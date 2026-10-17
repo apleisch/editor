@@ -1,3 +1,4 @@
+/// <reference path="./pdfjs-worker.d.ts" />
 import type { PDFPageProxy } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import type { PlanPoint, PlanSegment } from './detect-walls'
 
