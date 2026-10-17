@@ -10,6 +10,8 @@
 // idempotent under HMR.
 import '../lib/bootstrap'
 import { type ReactNode, useEffect } from 'react'
+import { de } from '../lib/i18n/de'
+import { startDomTranslator } from '../lib/i18n/dom-translator'
 
 export function ClientBootstrap({
   children,
@@ -22,5 +24,6 @@ export function ClientBootstrap({
     if (!enableDevDiagnostics) return
     import('react-scan').then(({ scan }) => scan({ enabled: true }))
   }, [enableDevDiagnostics])
+  useEffect(() => startDomTranslator(document.body, de), [])
   return children
 }
