@@ -17,15 +17,16 @@ import { createLocalGuideImage } from '../../../lib/local-guide-image'
 import { cn } from '../../../lib/utils'
 import useEditor from '../../../store/use-editor'
 import { useUploadStore } from '../../../store/use-upload'
+import { isPdfFile, usePlanImport } from '../plan-import-dialog'
 import { SliderControl } from '../controls/slider-control'
 import { Popover, PopoverContent, PopoverTrigger } from '../primitives/popover'
 import { ActionButton } from './action-button'
 import { useActionMenuPopupSide } from './placement'
 
 const MAX_FILE_SIZE = 200 * 1024 * 1024 // 200MB
-const ACCEPTED_FILE_TYPES = '.glb,.gltf,image/jpeg,image/png,image/webp,image/gif'
+const ACCEPTED_FILE_TYPES = '.glb,.gltf,image/jpeg,image/png,image/webp,image/gif,application/pdf,.pdf'
 const REFERENCES_EMPTY_TEXT =
-  'Upload GLB meshes as scan references or blueprint images as guide references.'
+  'Upload GLB meshes as scan references, or blueprint images and PDF plans as guide references.'
 
 // ── Helper: get guide images for the current level ──────────────────────────
 
@@ -105,11 +106,16 @@ function UploadButton({ onError }: { onError: (message: string | null) => void }
         return
       }
 
+      if (isPdfFile(file)) {
+        usePlanImport.getState().open({ file, levelId })
+        return
+      }
+
       const isScan =
         file.name.toLowerCase().endsWith('.glb') || file.name.toLowerCase().endsWith('.gltf')
       const isImage = file.type.startsWith('image/')
       if (!(isScan || isImage)) {
-        onError('Upload a .glb/.gltf scan or an image.')
+        onError('Upload a .glb/.gltf scan, an image or a PDF plan.')
         return
       }
 
