@@ -78,6 +78,7 @@ import useEditor from './../../../../../store/use-editor'
 import { useUploadStore } from '../../../../../store/use-upload'
 import { MetricControl } from '../../../controls/metric-control'
 import { LevelDuplicateDialog } from '../../../level-duplicate-dialog'
+import { isPdfFile, usePlanImport } from '../../../plan-import-dialog'
 import { CollectionsSection } from './collection-tree-node'
 import { InlineRenameInput } from './inline-rename-input'
 import { ZoneMembershipCheckbox } from './zone-membership-checkbox'
@@ -548,6 +549,11 @@ const LevelReferences = memo(function LevelReferences({
     if (!file) return
     e.target.value = ''
 
+    if (isPdfFile(file)) {
+      usePlanImport.getState().open({ file, levelId })
+      return
+    }
+
     // Auto-detect type based on file extension/mime type
     const isScan =
       file.name.toLowerCase().endsWith('.glb') || file.name.toLowerCase().endsWith('.gltf')
@@ -558,7 +564,7 @@ const LevelReferences = memo(function LevelReferences({
       useUploadStore.getState().startUpload(levelId, type, file.name)
       useUploadStore
         .getState()
-        .setError(levelId, 'Invalid file type. Please upload a .glb/.gltf scan or an image.')
+        .setError(levelId, 'Invalid file type. Please upload a .glb/.gltf scan, an image or a PDF plan.')
       return
     }
 
@@ -680,7 +686,7 @@ const LevelReferences = memo(function LevelReferences({
               </button>
 
               <input
-                accept=".glb,.gltf,image/jpeg,image/png,image/webp,image/gif"
+                accept=".glb,.gltf,image/jpeg,image/png,image/webp,image/gif,application/pdf,.pdf"
                 className="hidden"
                 onChange={handleAddAsset}
                 ref={scanInputRef}

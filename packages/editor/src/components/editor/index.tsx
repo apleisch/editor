@@ -83,6 +83,7 @@ import { EditorCommands } from '../ui/command-palette/editor-commands'
 import { FloatingLevelSelector } from '../ui/floating-level-selector'
 import { HelperManager } from '../ui/helpers/helper-manager'
 import { PanelManager } from '../ui/panels/panel-manager'
+import { PlanImportDialog } from '../ui/plan-import-dialog'
 import { ErrorBoundary } from '../ui/primitives/error-boundary'
 import { useSidebarStore } from '../ui/primitives/sidebar'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/primitives/tooltip'
@@ -1228,6 +1229,7 @@ const ViewerCanvas = memo(function ViewerCanvas({
       <div className="relative h-full" ref={setViewerAreaNode}>
         <QuickMeasurementHud />
         <DeleteConfirmationDialog />
+        <PlanImportDialog />
         <div
           className="absolute inset-0 grid"
           data-view-split={layout.split || undefined}

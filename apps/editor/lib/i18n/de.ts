@@ -245,6 +245,8 @@ export const de: Dictionary = {
     Corner: 'Ecke',
     'Corner Filler': 'Eckblende',
     'Corner Radius': 'Eckradius',
+    'Could not import this plan.': 'Dieser Plan konnte nicht importiert werden.',
+    'Could not read this PDF.': 'Diese PDF konnte nicht gelesen werden.',
     Count: 'Anzahl',
     Counterclockwise: 'Gegen den Uhrzeigersinn',
     'Countertop depth': 'Arbeitsplattentiefe',
@@ -254,6 +256,7 @@ export const de: Dictionary = {
     'Create a Pascal plugin': 'Pascal-Plugin erstellen',
     'Create array': 'Reihe erstellen',
     'Create from': 'Erstellen aus',
+    'Create walls': 'Wände erzeugen',
     Credits: 'Mitwirkende',
     Crop: 'Zuschneiden',
     'Crown molding': 'Deckenleiste',
@@ -340,6 +343,7 @@ export const de: Dictionary = {
     'Drawer Base': 'Schubladen-Unterschrank',
     'Drawer cabinet': 'Schubladenschrank',
     Drawers: 'Schubladen',
+    'Drawing scale': 'Massstab',
     'Drawing Tools': 'Zeichenwerkzeuge',
     'Drawn line': 'Gezeichnete Linie',
     Dresser: 'Kommode',
@@ -557,6 +561,7 @@ export const de: Dictionary = {
     Image: 'Bild',
     Import: 'Importieren',
     'Import a scene': 'Szene importieren',
+    'Import floor plan': 'Grundriss importieren',
     Inches: 'Zoll',
     'Include floor': 'Boden einbeziehen',
     'Include in file': 'In Datei aufnehmen',
@@ -580,6 +585,8 @@ export const de: Dictionary = {
     Intensity: 'Intensität',
     'Interface theme': 'Erscheinungsbild',
     Interior: 'Innen',
+    'Invalid file type. Please upload a .glb/.gltf scan, an image or a PDF plan.':
+      'Ungültiger Dateityp. Bitte lade einen .glb/.gltf-Scan, ein Bild oder einen PDF-Plan hoch.',
     Inward: 'Nach innen',
     Iron: 'Bügeleisen',
     'Ironing Board': 'Bügelbrett',
@@ -700,6 +707,8 @@ export const de: Dictionary = {
     'No openings yet. Cut one for a stair void or a hatch.':
       'Noch keine Öffnungen. Schneide eine für ein Treppenloch oder eine Luke.',
     'No picture': 'Kein Bild',
+    'No scale found on the sheet. Enter the scale printed on the plan.':
+      'Auf dem Plan wurde kein Massstab gefunden. Gib den aufgedruckten Massstab ein.',
     node: 'Element',
     nodes: 'Elemente',
     None: 'Keine',
@@ -753,6 +762,7 @@ export const de: Dictionary = {
     Overlay: 'Überlagerung',
     'Overlay image unavailable. Replace the image to restore it.':
       'Vorlagebild nicht verfügbar. Ersetze das Bild, um es wiederherzustellen.',
+    Page: 'Seite',
     Paint: 'Malen',
     'Paint regions': 'Malbereiche',
     'Paint with': 'Malen mit',
@@ -864,6 +874,7 @@ export const de: Dictionary = {
     'Raise the floor': 'Boden anheben',
     'Raised Arch': 'Überhöhter Bogen',
     'Raised on a foundation': 'Auf einem Fundament',
+    'Reading PDF…': 'PDF wird gelesen …',
     'Real length': 'Echte Länge',
     'Recessed Light': 'Einbauleuchte',
     Rect: 'Rechteckig',
@@ -1253,6 +1264,10 @@ export const de: Dictionary = {
     'Unwrap the corner: both windows stay, each framed at the corner':
       'Ecke auflösen: beide Fenster bleiben, jedes mit eigenem Rahmen an der Ecke',
     Up: 'Hoch',
+    'Upload a .glb/.gltf scan, an image or a PDF plan.':
+      'Lade einen .glb/.gltf-Scan, ein Bild oder einen PDF-Plan hoch.',
+    'Upload GLB meshes as scan references, or blueprint images and PDF plans as guide references.':
+      'Lade GLB-Modelle als Scan-Referenz oder Planbilder und PDF-Pläne als Vorlage hoch.',
     'Upload scan or guide image': 'Scan oder Vorlagebild hochladen',
     'Upload scan/floorplan': 'Scan/Grundriss hochladen',
     'US · 24 in': 'US · 24 in',
@@ -1363,6 +1378,12 @@ export const de: Dictionary = {
     [/Reorder (.+)/, (name) => `${tr(name)} verschieben`],
     [/(.+) 2D view/, (name) => `2D-Ansicht ${tr(name)}`],
     [/Measure: (.+)/, (kind) => `Messen: ${tr(kind)}`],
+    [
+      /Scale read from the sheet\. The sheet is ([\d.]+) m wide at this scale\./,
+      (meters) => `Massstab vom Plan gelesen. Das Blatt ist bei diesem Massstab ${meters} m breit.`,
+    ],
+    [/\((\d+) found\)/, (n) => `(${n} gefunden)`],
+    [/of (\d+)/, (n) => `von ${n}`],
     [
       /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2}), (\d{4})/,
       (month, day, year) => `${day}. ${MONTHS[month]} ${year}`,
