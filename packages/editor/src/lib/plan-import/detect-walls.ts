@@ -21,6 +21,7 @@ const OFFSET_TOLERANCE = 0.005
 const JOIN_GAP = 0.01
 const BAND_EPSILON = 0.02
 const MIN_HATCH_ANGLE = (15 * Math.PI) / 180
+const MAX_HATCH_SPACING = 0.25
 const MIN_JUNCTION_ANGLE = (10 * Math.PI) / 180
 
 type Direction = { angle: number; dir: [number, number]; normal: [number, number] }
@@ -89,7 +90,9 @@ export function detectWalls(
         if (isFilledBand(band, direction, usable, fills)) bands.push(band)
       }
     }
-    for (const band of bridgeBands(bands, outlines, minLength)) walls.push({ ...band, direction })
+    for (const band of mergeLayers(bridgeBands(bands, outlines, minLength), maxThickness)) {
+      walls.push({ ...band, direction })
+    }
   }
 
   return joinWallEnds(walls)
@@ -216,17 +219,26 @@ function isFilledBand(
   segments: readonly PlanSegment[],
   fills: readonly (readonly PlanPoint[])[],
 ) {
+  // Hatching is a run of parallel strokes at a steady spacing; the X of an
+  // appliance or the dividers of a counter are a few strokes far apart.
   const length = band.to - band.from
-  const needed = Math.max(2, Math.floor(length / 0.5))
-  let hatches = 0
+  const needed = Math.max(2, length / MAX_HATCH_SPACING)
+  const strokesByAngle = new Map<number, number>()
   for (const segment of segments) {
     const [a, b] = segment
     let angle = Math.abs(Math.atan2(b[1] - a[1], b[0] - a[0]) - direction.angle) % Math.PI
     if (angle > Math.PI / 2) angle = Math.PI - angle
     if (angle < MIN_HATCH_ANGLE) continue
     if (!(isInsideBand(a, band, direction) && isInsideBand(b, band, direction))) continue
-    hatches++
-    if (hatches >= needed) return true
+    // A hatch stroke runs from one face to the other; dot and gravel patterns don't.
+    if (Math.abs(across(b, direction) - across(a, direction)) < 0.5 * (band.high - band.low))
+      continue
+    let bucket = Math.atan2(b[1] - a[1], b[0] - a[0])
+    if (bucket < 0) bucket += Math.PI
+    const key = Math.round((bucket * 180) / Math.PI / 2) % 90
+    const count = (strokesByAngle.get(key) ?? 0) + 1
+    if (count >= needed) return true
+    strokesByAngle.set(key, count)
   }
   const middle = fromFrame((band.from + band.to) / 2, band.offset, direction)
   return fills.some((polygon) => isInsidePolygon(middle, polygon))
@@ -301,6 +313,34 @@ function isGapSpanned(before: Band, after: Band, outlines: Outline[]) {
       outline.from <= gapFrom + JOIN_GAP &&
       outline.to >= gapTo - JOIN_GAP,
   )
+}
+
+/**
+ * Joins the layers of one wall. Outer walls are drawn as a masonry band and an
+ * insulation band side by side, each with its own hatch; they share the line
+ * between them and become one wall as thick as both.
+ */
+function mergeLayers(bands: Band[], maxThickness: number): Band[] {
+  const layers = [...bands].sort((left, right) => left.low - right.low)
+  const merged: Band[] = []
+  for (const band of layers) {
+    const below = merged.find(
+      (candidate) =>
+        Math.abs(candidate.high - band.low) <= OFFSET_TOLERANCE * 2 &&
+        band.high - candidate.low <= maxThickness &&
+        Math.min(candidate.to, band.to) - Math.max(candidate.from, band.from) >
+          0.5 * Math.min(candidate.to - candidate.from, band.to - band.from),
+    )
+    if (!below) {
+      merged.push({ ...band })
+      continue
+    }
+    below.high = band.high
+    below.offset = (below.low + below.high) / 2
+    below.from = Math.min(below.from, band.from)
+    below.to = Math.max(below.to, band.to)
+  }
+  return merged
 }
 
 type PlacedWall = {

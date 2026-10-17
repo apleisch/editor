@@ -39,6 +39,24 @@ function loadPdfjs(): Promise<Pdfjs> {
 }
 
 export async function readPdfPlanPage(file: Blob, pageNumber = 1): Promise<PdfPlanPage> {
+  return readPdf(file, pageNumber, true)
+}
+
+/** The plan without its rendered image (no canvas needed, e.g. outside a browser). */
+export function readPdfPlanGeometry(
+  file: Blob,
+  pageNumber = 1,
+): Promise<Omit<PdfPlanPage, 'image'>> {
+  return readPdf(file, pageNumber, false)
+}
+
+async function readPdf(file: Blob, pageNumber: number, withImage: true): Promise<PdfPlanPage>
+async function readPdf(
+  file: Blob,
+  pageNumber: number,
+  withImage: false,
+): Promise<Omit<PdfPlanPage, 'image'>>
+async function readPdf(file: Blob, pageNumber: number, withImage: boolean) {
   const pdfjs = await loadPdfjs()
   const loading = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) })
   const pdf = await loading.promise
@@ -50,7 +68,7 @@ export async function readPdfPlanPage(file: Blob, pageNumber = 1): Promise<PdfPl
     const printedScale = findPrintedScale(
       text.items.map((item) => ('str' in item ? item.str : '')).join(' '),
     )
-    return {
+    const plan = {
       pageNumber: page.pageNumber,
       pageCount: pdf.numPages,
       widthMm: viewport.width * MM_PER_POINT,
@@ -58,8 +76,8 @@ export async function readPdfPlanPage(file: Blob, pageNumber = 1): Promise<PdfPl
       printedScale,
       segments,
       fills,
-      image: await renderPage(page),
     }
+    return withImage ? { ...plan, image: await renderPage(page) } : plan
   } finally {
     await loading.destroy()
   }

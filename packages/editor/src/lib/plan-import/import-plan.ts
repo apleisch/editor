@@ -15,7 +15,7 @@ import type { PdfPlanPage } from './pdf-plan'
 const WALL_JOIN_RADIUS = 0.05
 
 /** Paper millimetres → plan metres, centred on the sheet (where the guide image sits). */
-export function planWallsFromPage(page: PdfPlanPage, scale: number): DetectedWall[] {
+export function planWallsFromPage(page: Omit<PdfPlanPage, 'image'>, scale: number): DetectedWall[] {
   const metersPerMm = scale / 1000
   const toPlan = ([x, y]: PlanPoint): [number, number] => [
     (x - page.widthMm / 2) * metersPerMm,

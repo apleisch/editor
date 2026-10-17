@@ -128,4 +128,27 @@ describe('detectWalls', () => {
     const length = Math.hypot(wall!.end[0] - wall!.start[0], wall!.end[1] - wall!.start[1])
     expect(length).toBeCloseTo(3, 2)
   })
+
+  it('joins a masonry layer and an insulation layer into one wall', () => {
+    const insulation: PlanSegment[] = []
+    for (let x = 0; x <= 4; x += 0.04) insulation.push(line(x, 0.15, x, 0.35))
+    const walls = detectWalls([
+      line(0, 0, 4, 0),
+      line(0, 0.15, 4, 0.15),
+      line(0, 0.35, 4, 0.35),
+      ...hatch([0, 0, 4, 0.15]),
+      ...insulation,
+    ])
+    expect(walls).toEqual([{ start: [0, 0.175], end: [4, 0.175], thickness: 0.35 }])
+  })
+
+  it('ignores kitchen rows with appliance crosses and dotted fill patterns', () => {
+    const counter: PlanSegment[] = [line(0, 0, 4.8, 0), line(0, 0.6, 4.8, 0.6)]
+    for (let x = 0; x <= 4.8; x += 0.6) counter.push(line(x, 0, x, 0.6))
+    for (const x of [0, 0.6, 3.6, 4.2])
+      counter.push(line(x, 0, x + 0.6, 0.6), line(x, 0.6, x + 0.6, 0))
+    const dotted: PlanSegment[] = [line(0, 2, 3, 2), line(0, 2.3, 3, 2.3)]
+    for (let x = 0.02; x < 3; x += 0.03) dotted.push(line(x, 2.1, x + 0.01, 2.11))
+    expect(detectWalls([...counter, ...dotted])).toEqual([])
+  })
 })
