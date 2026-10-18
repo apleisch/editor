@@ -5,6 +5,7 @@
 // import here.
 import {
   applySceneGraphToEditor,
+  CATALOG_ITEMS,
   Editor,
   ItemsPanel,
   type SceneGraph,
@@ -17,6 +18,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PoolSectionBanner } from '@/components/pool-section-banner'
 import { countGraphNodes, isEmptyGraphOverwrite } from '@/lib/empty-graph-guard'
+import { useFurnitureItems } from '@/lib/furniture-items'
 import { useLocalArtifactStore } from '@/lib/local-artifact-store'
 import {
   isPendingSceneGraphEcho,
@@ -46,9 +48,11 @@ export interface SceneMeta {
 
 // The open-source editor only ships the built-in catalog (no uploaded items),
 // so the item source chips and tag filters add nothing — drop them and keep
-// the panel to plain categories.
+// the panel to plain categories. This fork appends its Poly Haven furniture.
 function EditorItemsPanel() {
-  return <ItemsPanel showSourceFilter={false} showTagFilters={false} />
+  const furniture = useFurnitureItems()
+  const items = useMemo(() => [...CATALOG_ITEMS, ...furniture], [furniture])
+  return <ItemsPanel items={items} showSourceFilter={false} showTagFilters={false} />
 }
 
 const SIDEBAR_TABS: (SidebarTab & { component: React.ComponentType })[] = [

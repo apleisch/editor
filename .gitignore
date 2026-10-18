@@ -61,3 +61,6 @@ og-test
 
 # Photo textures, downloaded by scripts/fetch-photo-materials.sh
 apps/editor/public/material/photo/
+apps/editor/public/furniture/polyhaven/
+scripts/furniture/node_modules/
+scripts/furniture/package-lock.json

@@ -1,0 +1,10 @@
+{
+  "name": "fetch-furniture",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@gltf-transform/core": "4.2.1",
+    "@gltf-transform/extensions": "4.2.1",
+    "@gltf-transform/functions": "4.2.1"
+  }
+}
