@@ -16,6 +16,7 @@ import {
   InteractiveSystem,
   PERF_OVERLAY_ENABLED,
   recordPerfSample,
+  resolveCdnUrl,
   SceneEnvironment,
   useViewer,
   Viewer,
@@ -727,7 +728,10 @@ function getActivePaintMaterialSwatchImageUrl(
   const catalogId =
     getLibraryMaterialIdFromRef(material?.materialPreset) ?? material?.material?.id ?? undefined
   const catalogMaterial = getCatalogMaterialById(catalogId)
-  return catalogMaterial?.previewThumbnailUrl ?? catalogMaterial?.preset.maps.albedoMap
+  return (
+    resolveCdnUrl(catalogMaterial?.previewThumbnailUrl ?? catalogMaterial?.preset.maps.albedoMap) ??
+    undefined
+  )
 }
 
 function PaintCursorBadge({

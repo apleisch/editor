@@ -1,6 +1,7 @@
 'use client'
 
 import { type MaterialTarget, toLibraryMaterialRef } from '@pascal-app/core'
+import { resolveCdnUrl } from '@pascal-app/viewer'
 import { Plus } from 'lucide-react'
 import { useMaterialCatalogModel, type MaterialSourceFilter } from '../../../lib/material-catalog-model'
 import { triggerSFX } from '../../../lib/sfx-bus'
@@ -126,7 +127,7 @@ export function MaterialPicker({
                   <img
                     alt={item.label}
                     className="h-full w-full object-cover"
-                    src={item.previewThumbnailUrl}
+                    src={resolveCdnUrl(item.previewThumbnailUrl) ?? ''}
                   />
                 ) : (
                   <div

@@ -1,0 +1,17 @@
+{
+  "source": "https://ambientcg.com (CC0)",
+  "materials": [
+    { "asset": "WoodFloor051", "label": "Eichenparkett hell", "category": "wood", "surfaces": ["floor"], "size": [1.8, 1.8], "roughness": 0.6 },
+    { "asset": "WoodFloor008", "label": "Eichenparkett dunkel", "category": "wood", "surfaces": ["floor"], "size": [2, 2], "roughness": 0.6 },
+    { "asset": "Planks029S", "label": "Terrassendielen", "category": "wood", "surfaces": ["floor", "outdoor"], "size": [2.4, 2.4], "roughness": 0.8 },
+    { "asset": "Tiles107", "label": "Fliesen weiss 50 × 50", "category": "tile", "surfaces": ["floor", "wall"], "size": [1, 1], "roughness": 0.3 },
+    { "asset": "Tiles050", "label": "Fliesen grau", "category": "tile", "surfaces": ["floor", "wall"], "size": [2, 2], "roughness": 0.4 },
+    { "asset": "Tiles138", "label": "Fliesen anthrazit", "category": "tile", "surfaces": ["floor", "wall"], "size": [2, 2], "roughness": 0.4 },
+    { "asset": "PavingStones136", "label": "Aussenplatten grau", "category": "tile", "surfaces": ["floor", "outdoor"], "size": [2, 2], "roughness": 0.8 },
+    { "asset": "Marble012", "label": "Marmor weiss", "category": "stone", "surfaces": ["floor", "wall"], "size": [2, 2], "roughness": 0.25 },
+    { "asset": "Tiles140", "label": "Naturstein dunkel", "category": "stone", "surfaces": ["floor", "wall", "outdoor"], "size": [2, 2], "roughness": 0.7 },
+    { "asset": "Plaster001", "label": "Aussenputz weiss", "category": "concrete", "surfaces": ["wall", "outdoor"], "size": [2, 2], "roughness": 0.9 },
+    { "asset": "Concrete034", "label": "Sichtbeton", "category": "concrete", "surfaces": ["wall", "floor", "ceiling", "outdoor"], "size": [1.1, 0.55], "roughness": 0.8 },
+    { "asset": "RoofingTiles006", "label": "Tonziegel rot", "category": "roofing", "surfaces": ["roof"], "size": [3.2, 3.2], "roughness": 0.8 }
+  ]
+}

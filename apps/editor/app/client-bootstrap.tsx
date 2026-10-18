@@ -12,6 +12,10 @@ import '../lib/bootstrap'
 import { type ReactNode, useEffect } from 'react'
 import { de } from '../lib/i18n/de'
 import { startDomTranslator } from '../lib/i18n/dom-translator'
+import { registerPhotoMaterials } from '../lib/photo-materials'
+
+// Before the first scene loads, so a saved `library:photo-…` ref resolves.
+registerPhotoMaterials()
 
 export function ClientBootstrap({
   children,

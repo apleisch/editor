@@ -8,6 +8,7 @@ import {
   nodeRegistry,
   useScene,
 } from '@pascal-app/core'
+import { resolveCdnUrl } from '@pascal-app/viewer'
 import { useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../primitives/popover'
 import { MaterialPicker } from './material-picker'
@@ -27,7 +28,7 @@ function describe(ref: string, materials: ReturnType<typeof useScene.getState>['
     return {
       label: library.label,
       color: library.previewColor ?? null,
-      image: library.previewThumbnailUrl ?? null,
+      image: resolveCdnUrl(library.previewThumbnailUrl),
     }
   const sceneId = getSceneMaterialIdFromRef(ref)
   const scene = sceneId ? materials[sceneId as keyof typeof materials] : undefined
