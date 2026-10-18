@@ -58,3 +58,6 @@ og-test
 .claude/launch.json
 .claude/settings.local.json
 .vscode/launch.json
+
+# Photo textures, downloaded by scripts/fetch-photo-materials.sh
+apps/editor/public/material/photo/
